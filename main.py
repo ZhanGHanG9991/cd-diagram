@@ -315,13 +315,13 @@ def wilcoxon_holm(alpha=0.05, df_perf=None):
     classifiers = list(df_counts.loc[df_counts['count'] == max_nb_datasets]
                        ['classifier_name'])
     # test the null hypothesis using friedman before doing a post-hoc analysis
-    friedman_p_value = friedmanchisquare(*(
-        np.array(df_perf.loc[df_perf['classifier_name'] == c]['accuracy'])
-        for c in classifiers))[1]
-    if friedman_p_value >= alpha:
-        # then the null hypothesis over the entire classifiers cannot be rejected
-        print('the null hypothesis over the entire classifiers cannot be rejected')
-        exit()
+    # friedman_p_value = friedmanchisquare(*(
+    #     np.array(df_perf.loc[df_perf['classifier_name'] == c]['accuracy'])
+    #     for c in classifiers))[1]
+    # if friedman_p_value >= alpha:
+    #     # then the null hypothesis over the entire classifiers cannot be rejected
+    #     print('the null hypothesis over the entire classifiers cannot be rejected')
+    #     exit()
     # get the number of classifiers
     m = len(classifiers)
     # init array that contains the p-values calculated by the Wilcoxon signed rank test
@@ -379,6 +379,6 @@ def wilcoxon_holm(alpha=0.05, df_perf=None):
     return p_values, average_ranks, max_nb_datasets
 
 # df_perf = pd.read_csv('DefaultvsTunedvsEnsembleCritDiffAcc.csv',index_col=False)
-def draw(csv_name, path, name):
+def draw(csv_name, path, name, alpha):
     df_perf = pd.read_csv(csv_name,index_col=False)
-    draw_cd_diagram(path=path, name=name, df_perf=df_perf, title='Accuracy', labels=True)
+    draw_cd_diagram(path=path, name=name, df_perf=df_perf, alpha=alpha, title='Accuracy', labels=True)
